@@ -3,16 +3,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 from math import sin,cos, pi
 import random as r
+# Set the global font size for all plot elements
+plt.rcParams.update({'font.size': 14})
 
 N = 50
 v0 = 0.03
 R = 0.1
 n = 1
 eta = [0,0.05,0.1,pi/2,pi,2*pi]
+eta_labels = ["0", "0.05", "0.1", "$\pi/2$", "$\pi$", "$2\pi$"]
+time_average = []
 T = 1000
 
 t_plot = np.arange(0,T)
-
+idx = 0
 for e in eta:
     theta_list = []
 
@@ -51,8 +55,7 @@ for e in eta:
         
         x = (x+v0*np.cos(angle))%1
         y = (y+v0*np.sin(angle))%1
-        theta_list.append(abs(np.sum(np.cos(angle)+np.sin(angle))/N))
-
+        theta_list.append(abs(np.sqrt(np.sum(np.cos(angle))**2+np.sum(np.sin(angle))**2))/N)
 
         #q.remove()
 
@@ -60,10 +63,22 @@ for e in eta:
 
         #plt.pause(0.001)
 
-    plt.plot(t_plot, theta_list, label=str(e))
+    plt.plot(t_plot, theta_list, label="$\eta = $"+eta_labels[idx])
+    summis = sum(theta_list)/T
+    time_average.append(summis)
+    idx += 1
 
 plt.xlabel("Time")
 plt.ylabel("$\Phi(t)$")
 plt.title("Order parameter for different values of $\eta$ over time")
-plt.legend()
+plt.legend(loc='upper left', bbox_to_anchor=(1.0, 1.0))
+plt.tight_layout() 
+plt.show()
+
+plt.figure() 
+plt.bar(eta_labels, time_average, color='skyblue', edgecolor='black', width=0.6)
+plt.xlabel("$\eta$")
+plt.ylabel("Time averaged $\Phi(t)$")
+plt.title("Time-averaged order parameter as a function of $\eta$")
+plt.ylim(0, 1.05) 
 plt.show()
