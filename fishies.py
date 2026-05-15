@@ -5,15 +5,22 @@ import random as r
 
 N = 500
 v0 = 0.03
-R=0.1
-eta = [0,0.05,0.1,pi/2,pi,2*pi]
-
-fish = {}
-
-for i in range(N):
-    x = r.random()
-    y = r.random()
-    angle = r.randrange(0, 2*pi)
-    fish[i] = {(x,y,angle)}
+R = 0.1
 
 
+x = np.random.rand(N)
+y = np.random.rand(N)
+
+angu = np.cos(np.linspace(0, 2*np.pi, N))
+angv = np.sin(np.linspace(0, 2*np.pi, N))
+
+
+
+plt.quiver(x,y,angu,angv)
+plt.xlim(0,1)
+plt.ylim(0,1)
+
+
+plt.gca().set_aspect('equal')
+
+plt.show()
