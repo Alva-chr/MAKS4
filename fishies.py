@@ -5,7 +5,7 @@ from math import sin,cos, pi
 import random as r
 
 N = 50
-v0 = 0.01
+v0 = 0.03
 R = 0.1
 n = 1
 eta = [0,0.05,0.1,pi/2,pi,2*pi]
@@ -29,17 +29,17 @@ for step in range(0,T):
         dx = x-x[i]
         dy = y-y[i]
         condlistX = [dx<-0.5, dx>=0.5]
-        choicelistX = [dx+0.5, dx-0.5]
+        choicelistX = [dx+1, dx-1]
 
         dx = np.select(condlistX,choicelistX,default=dx)
         condlistY = [dy<-0.5, dy>=0.5]
-        choicelistY = [dy+0.5, dy-0.5]
+        choicelistY = [dy+1, dy-1]
 
-        dy = np.select(condlistX,choicelistY,default=dy)
+        dy = np.select(condlistY,choicelistY,default=dy)
 
         dist_squared = dx*dx+dy*dy
 
-        mask = (dist_squared<R*R) & (dist_squared>0)
+        mask = (dist_squared<R*R)
 
         sumx[i] = np.sum(np.cos(angle[mask]))
         sumy[i] = np.sum(np.sin(angle[mask]))
@@ -57,4 +57,3 @@ for step in range(0,T):
     q = ax.quiver(x, y, np.cos(angle), np.sin(angle))
 
     plt.pause(0.001)
-
