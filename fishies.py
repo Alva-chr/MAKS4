@@ -5,11 +5,11 @@ from math import sin,cos, pi
 import random as r
 
 N = 50
-v0 = 0.03
-R=0.1
+v0 = 0.01
+R = 0.1
 n = 1
 eta = [0,0.05,0.1,pi/2,pi,2*pi]
-T = 40
+T = 1000
 
 # Initial Conditions
 x = np.random.rand(N)
@@ -35,11 +35,11 @@ for step in range(0,T):
         condlistY = [dy<-0.5, dy>=0.5]
         choicelistY = [dy+0.5, dy-0.5]
 
-        dy = np.select(condlistX,choicelistX,default=dy)
+        dy = np.select(condlistX,choicelistY,default=dy)
 
         dist_squared = dx*dx+dy*dy
 
-        mask = (dist_squared<R**R) & (dist_squared>0)
+        mask = (dist_squared<R*R) & (dist_squared>0)
 
         sumx[i] = np.sum(np.cos(angle[mask]))
         sumy[i] = np.sum(np.sin(angle[mask]))
@@ -52,13 +52,9 @@ for step in range(0,T):
     x = (x+v0*np.cos(angle))%1
     y = (y+v0*np.sin(angle))%1
 
-    u = np.cos(angle)
-    v = np.sin(angle)
-
     q.remove()
 
     q = ax.quiver(x, y, np.cos(angle), np.sin(angle))
 
     plt.pause(0.001)
-
 
