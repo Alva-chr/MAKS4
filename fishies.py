@@ -11,14 +11,7 @@ n = 1
 eta = [0,0.05,0.1,pi/2,pi,2*pi]
 T = 1000
 
-
-
-
-
 t_plot = np.arange(0,T)
-
-
-
 
 for e in eta:
     theta_list = []
@@ -28,7 +21,6 @@ for e in eta:
     y = np.random.rand(N)
     angle = np.random.rand(N)*2*np.pi
     angle_temp = np.zeros_like(angle)
-    theta_list.append(abs(np.sum(np.cos(angle)+np.sin(angle))/N))
     # plt.ion()
     # fig, ax = plt.subplots(figsize=(6,6))
     # q = ax.quiver(x,y,np.cos(angle),np.sin(angle))
@@ -59,6 +51,8 @@ for e in eta:
         
         x = (x+v0*np.cos(angle))%1
         y = (y+v0*np.sin(angle))%1
+        theta_list.append(abs(np.sum(np.cos(angle)+np.sin(angle))/N))
+
 
         #q.remove()
 
@@ -66,7 +60,7 @@ for e in eta:
 
         #plt.pause(0.001)
 
-        #plt.plot(theta_list, t_plot, label=str(eta))
+    plt.plot(t_plot, theta_list, label=str(e))
 
 plt.xlabel("Time")
 plt.ylabel("$\Phi(t)$")
