@@ -1,14 +1,15 @@
+import matplotlib.pyplot as plt
 import numpy as np
 import matplotlib.pyplot as plt
 from math import sin,cos, pi
 import random as r
 
-N = 500
+N = 50
 v0 = 0.03
 R=0.1
 n = 1
 eta = [0,0.05,0.1,pi/2,pi,2*pi]
-T = 10000
+T = 40
 
 # Initial Conditions
 x = np.random.rand(N)
@@ -16,8 +17,9 @@ y = np.random.rand(N)
 angle = np.random.rand(N)*2*np.pi
 angle_temp = np.zeros_like(angle)
 
-
-
+plt.ion()
+fig, ax = plt.subplots(figsize=(6,6))
+q = ax.quiver(x,y,np.cos(angle),np.sin(angle))
 
 #Update the angle
 for step in range(0,T):
@@ -44,15 +46,19 @@ for step in range(0,T):
 
     
 
-    angle = (np.arctan2(sumx, sumy) + eta[0] * (np.random.random(N) - 0.5) * 2) % (2 * np.pi)
+    angle = (np.arctan2(sumy, sumx) + eta[0] * (np.random.random(N) - 0.5) * 2) % (2 * np.pi)
 
     
-    x = (x+np.cos(angle))%1
-    y = (y+np.sin(angle))%1
+    x = (x+v0*np.cos(angle))%1
+    y = (y+v0*np.sin(angle))%1
 
+    u = np.cos(angle)
+    v = np.sin(angle)
 
-    print(x[0])
-    print(y[0])
+    q.remove()
 
+    q = ax.quiver(x, y, np.cos(angle), np.sin(angle))
+
+    plt.pause(0.001)
 
 
