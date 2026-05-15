@@ -18,12 +18,29 @@ angle_temp = np.zeros_like(angle)
 
 
 
+
 #Update the angle
 for step in range(0,T):
+    sumx = np.zeros_like(x)
+    sumy = np.zeros_like(y)
     for i in range(N):
         dx = x-x[i]
         dy = y-y[i]
-        np.where((dx<0.5),dx+0.5,0)
+        condlistX = [dx<-0.5, dx>=0.5]
+        choicelistX = [dx+0.5, dx-0.5]
+
+        dx = np.select(condlistX,choicelistX,default=dx)
+        condlistY = [dy<-0.5, dy>=0.5]
+        choicelistY = [dy+0.5, dy-0.5]
+
+        dy = np.select(condlistX,choicelistX,default=dy)
+
+        dist_squared = dx*dx+dy*dy
+
+        mask = (dist_squared<R**R) & (dist_squared>0)
+
+        sumx[i] = np.sum(np.cos(angle[mask]))
+        sumy[i] = np.sum(np.sin(angle[mask]))
 
     
 
